@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>“以爱之名”孝亲敬老公益作品创意大赛</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="full-screen" content="true"/>
+<meta name="screen-orientation" content="portrait"/>
+<meta name="x5-fullscreen" content="true"/>
+<meta name="360-fullscreen" content="true"/>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script>
+//JSONP
+function loadData(_url,data,fn){
+	var url = "",t=document.createElement("script");
+	url = _url+"?"+data;
+	t.src=url,t.type="text/javascript",t.async=!0;
+	document.getElementsByTagName("head")[0].appendChild(t);
+	t.onload=function(){document.getElementsByTagName("head")[0].removeChild(t);if(!!fn){fn();}}
+}
+
+//ajax
+function ajax(method,url,para,callback){
+	var xmlhttp=new XMLHttpRequest(),_url,_para;
+	xmlhttp.onreadystatechange=function(){
+		if(xmlhttp.readyState==4&&xmlhttp.status==200){
+			callback(JSON.parse(xmlhttp.responseText));
+			}
+		};
+	if(method=="GET"){
+		_url=url+"?"+para;
+		_para=null;
+		}
+	else if(method=="POST"){
+		_url=url;
+		_para=para;
+		}
+	xmlhttp.open(method,_url,true);
+	xmlhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+	xmlhttp.send(_para);
+}
+
+//获取参数的hdindex
+function getURLPara(str){
+	var ary=[],obj={},wls=window.location.search,temp='',i=0;
+	if(wls!==""){
+		if(wls.indexOf("&")!=-1){ary=wls.substring(1).split("&");}
+		else{ary[0]=wls.substring(1)}
+	    i=ary.length;
+		for(;i--;){
+			temp=ary[i].split("=");
+			obj[temp[0]]=temp[1];
+			}
+	}
+	if(str){return obj[str];}
+	else{return obj;}
+}
+
+//获取IOS版本
+function get_ios_version(){
+    var ua = navigator.userAgent.toLowerCase();
+    var version = null;
+    if (ua.indexOf("like mac os x") > 0) {
+        var reg = /os [\d._]+/gi;
+        var v_info = ua.match(reg);
+        version = (v_info + "").replace(/[^0-9|_.]/ig, "").replace(/_/ig, "."); //得到版本号9.3.2或者9.0
+        //version = parseInt(version.split('.')[0]); // 得到版本号第一位
+    }
+    return version;
+}
+
+//获取安卓版本
+function get_android_version() {
+    var ua = navigator.userAgent.toLowerCase();
+    var version = null;
+    if (ua.indexOf("android") > 0) {
+        var reg = /android [\d._]+/gi;
+        var v_info = ua.match(reg);
+        version = (v_info + "").replace(/[^0-9|_.]/ig, "").replace(/_/ig, "."); //得到版本号4.2.2
+        //version = parseInt(version.split('.')[0]);// 得到版本号第一位
+    }
+    return version;
+}
+</script>
+<link href="style.css?0724" rel="stylesheet">
+</head>
+<body>
+<!-- <div class="logo"><img src="images/logo.png" /></div> -->
+<div class="lod" id="load">
+    <span><em>0</em>%</span>
+</div>
+
+<div class="music"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAAsCAMAAAApWqozAAAAxlBMVEUAAAAAAAD///////8SEhL///8JCQkgICD///93d3eoqKj7+/v////v7+/9/f329vb////Ly8u8vLz///+Li4v////////////////39/fKyspKSkr///+CgoIwMDDr6+v///+3t7fm5ub09PT///////////+NjY18fHxQUFA/Pz8eHh7///9NTU1LS0v///////9sbGzl5eUlJSWrq6vz8/Po6Oji4uLU1NSgoKCBgYFfX1////99fX0uLi6rq6uqqqr/////JqCTAAAAQXRSTlOZAPvtna6Xllu8nvz+9eXPvamjm5hLPBwD+uCtp5iV8u/Xuvj11NLFvq+qoaCVlXp4ubijnvfw7ebMwLSol5XR0f74VT4AAAILSURBVDjLnZXpVuJAEIXLDlmEhC2EJUFCQFlEBRRHnVFn7vu/1MhEutLpzniO91e68p2cSlfVLTpTNezv7IUlhLWwd/1h6aUKR2MoGkeVsNcG/Fand+s6jnvb67R8oO0Z4YENNLsTKmjSbQL2QIc9C9bBoZKcw0fYK8MhMHMZqv3ZUy53BoQqfANRJyrAox/yuS5wU4RDXF6QogAv8vniEiHDHkSJpRSNc6YFvBM8sCBz4C9j9IszwXTwCduYkQHGPJHHe9g57MFyy2ztcfkMBA+ns2vB+we3OQmGR8kmBuIaJ9I+whGajgE+p1oM/JTVaSL6gMfokg4f72LzXEiki/EZDeFPKmBKUv70xMeQ+mhRFUxLP5ahFvq0RacapqeGDHWwIxs9EyxyOGO4B5uucGeC/RxeBTJ0hyuy4Jpg5PA6lSEXFgk4/4O5Ux2IL+BlUIS/SCPbF9PgHzTC16T8oPnqSHDr89WZivKwTjaNFZ+5KFq5r1+e0IjnPCZcbq2R9gGOmnO23EjlFl0BObzmGLeo2vyJQK6RnD9u/nysDjIW41OpHCg5VtrANk4wXwYPLFuBCv+WGFuBZjJZnvCSMTYZzb42WfCYZnxtbF+KMb5Rpd7YGNlyNbHlGs1cl3sPhKY1UdfXRN3C1KtaQO9F9J0X0PdWGyt6haJX89Lkdby1F1Mhpgt7q63jvyQdUzVIY/DfAAAAAElFTkSuQmCC" /></div>
+<audio src="images/mysound.mp3" preload="auto" loop id="musicAudio"></audio>
+<div class="swiper-container" id="swiper">
+  <div class="swiper-wrapper">
+  	<!--page0-->
+    <div class="swiper-slide page0 swiper-no-swiping">
+      <div class="box">
+		  <div class="qiqiu"><img src="./images/qiqiu.png" alt="" class="qiqiu01" /></div>
+		<h2><img src="images/p1title.png" class="img100" ></h2>
+		<a href="javascript:mySwiper.slideTo(3, 330, 'true');" class="bmbtn"><img src="images/button.png" class="img100 heart" /></a>
+      </div>
+		<div class="bottom">
+			<div class="slope"></div>
+			<img src="images/oldCouple.png" class="oldCouple">
+		</div>
+      <div class="guide" style="visibility:hidden;"></div>
+    </div>
+    <!--page1-->
+    <div class="swiper-slide page1">
+      <div class="box">
+        <div class="deco"><img src="./images/qiqiu02.png" alt="" class="heart01" /></div>
+      </div>
+      <div class="guide"></div>
+    </div>
+    <!--page2-->
+    <div class="swiper-slide page2">
+      <div class="box">
+		   <div class="tree"><img src="./images/tree03.png" alt="" class="tree03"></div>
+      		<h2><img src="images/title03.png" class="img100"></h2>
+      		<div class="rules">
+				<ul>
+					<li class="active"><span>作品要求</span></li>
+					<li><span>报名流程</span></li>
+					<li><span>奖励机制</span></li>
+				</ul>
+				<div id="content">
+					<div class="tab" style="display:block;"><img src="./images/request.png" alt="" /></div>
+					<div class="tab"><img src="./images/flow.png" alt="" /></div>
+					<div class="tab"><img src="./images/reward.png" alt="" /></div>
+				</div>
+				<a href="javascript:mySwiper.slideTo(3, 330, 'true');" class="bmbtn01"><img src="./images/button00.png" class="img100 heart" /></a>
+			</div>
+      </div>
+      <div class="guide"></div>
+      <div class="pcurl"><span>可登录电脑专题页进行报名：http://hygzs.dashenw.cn/name-of-love/pc/index.html</span></div>
+    </div>
+    <!--page3-->
+    <div class="swiper-slide page3">
+      <div class="box">
+      	<div class="formbox">
+			<p><label>姓　　名</label><input type="text" id="name" name="name" maxlength="8" /></p>
+			<p><label>电　　话</label><input type="tel" id="phone" name="phone" maxlength="11" /></p>
+			<p><label>单位/院校</label><input type="text" id="company" name="company" maxlength="50" /></p>
+			<p><label>邮　　箱</label><input type="email" id="email" name="email" maxlength="80" /></p>
+			<p><label>作品名称</label><input type="text" id="title" name="title" maxlength="80" /></p>
+			<p class="long"><label>创作理念（500字以内）</label><textarea id="writeidea" name="writeidea" maxlength="500"></textarea></p>
+			<p class="long" id="uploadfile">
+				<label>作品上传</label>
+				<span><img src="./images/word.png" />文学类</span>
+				<span><img src="./images/art.png" />艺术类</span>
+				<span><img src="./images/moive.png" />微电影</span>
+			</p>
+			<input type="hidden" id="uploadtype" name="uploadtype" value="1">
+			<div class="btn"><a href="javascript:;" onclick="checkForm();"><img src="images/button01.png" class="img100" /></a></div>
+      	</div>
+      </div>
+      <!-- <div class="guide"></div> -->
+    </div>
+    <!--page0-->
+    <div class="swiper-slide page0 swiper-no-swiping">
+      <div class="box">
+		<h2><img src="images/p1title.png" class="img100" ></h2>
+		<a href="javascript:mySwiper.slideTo(4, 330, 'true');" class="bmbtn"><img src="images/button.png" class="img100" /></a>
+      </div>
+		<div class="bottom">
+			<div class="slope"></div>
+			<img src="images/oldCouple.png" class="oldCouple">
+		</div>
+      <div class="guide" style="visibility:hidden;"></div>
+    </div>
+    <!--page end-->
+  </div>
+</div>
+
+<div class="popbox">
+    <div class="pop" id="ruleBox">
+        <div class="ruleContent" id="ruleContent">
+			<div class="word">
+				<img src="./images/word-modal.png" style="width:4.52rem;" />
+				<div class="uploadWord">
+					<div class="showword"><span></span><i></i></div>
+					<input type="file" name="file" id="wordForm" />
+					<p>重要提醒：因为word文件在手机端的难以处理和编辑，所以决定暂不开放手机端的word文件上传，如需要上传文学类作品请在电脑浏览器中参与本次活动。电脑端地址：<span>http://hygzs.dashenw.cn/name-of-love/pc/index.html</span>（长按复制）</p>
+				</div>
+				<!-- <a class="button" href="javascript:;" onclick="showSomePOP(0,'ruleBox');">完成上传</a> -->&nbsp;<br />&nbsp;<br />&nbsp;<br />&nbsp;
+				<img src="images/beKonw01.png" class="img100" />
+			</div>
+			<div class="art">
+					<img src="./images/art-modal.png" style="width:50%;" />
+					<div class="upload" id="uploadImage">
+						<div class="imgfile"><p></p><input type="file" name="upload[]" /></div>
+						<div class="imgfile"><p></p><input type="file" name="upload[]" /></div>
+						<div class="imgfile"><p></p><input type="file" name="upload[]" /></div>
+						<div class="imgfile"><p></p><input type="file" name="upload[]" /></div>
+						<div class="imgfile"><p></p><input type="file" name="upload[]" /></div>
+					</div>
+					<a class="button" href="javascript:;" onclick="showSomePOP(0,'ruleBox');">完成上传</a>
+					<img src="images/beKonw01.png" class="img100" />
+				</div>
+			<div class="movie">
+				<img src="./images/movie-modal.png" style="width:58%;"/>
+				<input type="text" name="videourl" id="videoUrl" placeholder="请将视频URL地址贴入框内" />
+				<a class="button" href="javascript:;" onclick="showSomePOP(0,'ruleBox');">完成上传</a>
+				<img src="images/beKonw01.png" class="img100" />
+			</div>
+			<a href="javascript:;" class="closepop"></a>
+        </div>
+    </div>
+</div>
+
+<!--分享指引-->
+<div class="sharetip" id="sharetip">
+  <div class="closeSharetip"></div>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAWAAAADTCAMAAACIljkRAAAAdVBMVEUAAAD/lgD/lgD/lgD/lgD/lgD/lgD/lgD/lgD/lgD/lgD/lgD/lgD/lgD/lgD/lgD/lgD/lgD/lgD/lgD/lgD/lgD/lgD/lgD/lgD/lgD/lgD/lgD/lgD/lgD/lgD/lgD/lgD/lgD/lgD/lgD/lgD/lgD/lgAVLWDUAAAAJ3RSTlMABA7+OC0lS1MgCEDA8hSikBixbDEcYKp41VpE6c9/dGbb48iFt5l8JtJPAAAGGElEQVR42uzdy5KbMBAF0JbEyyABxtg8zMMY7P//xCROMo49zmJmuIupumeTqizvqESr1QahtW0DJQS0OWkhoKgJhGCUPxtPCCWOzsbUsRCGzs1PdisE4VemM86ZoxCA8qyx4dQXjnvEDWD7LYLQZTtXsVBb3z437rqV2gze+bwRWlmam/NJRDITSWFaHubWpYLM2ER+ssaTg6lSoRWpsP+Tbzq5QPym51ljTeo4u2wjvyTObkUVHQNekY6a7m9htjO5FlnMiZvwavSp6epUfstv0R7PF27Ca4kP89zKX/bW6dG24R6xEn2wxVH+2k5dcFvIU8g9YhV6tNlR3kTuVqCp3XlkwOus3yIP5G4xYyw/eU3BTXgF6SkbNvKPwoS3f1UxcxNeI9/rLpB/6Mb5cjPMidAXpYf86X4zdHYvv6hDf+Am/EVptLRbeTCYJZYb/5KzZfnVfMcolUeFieS3OMvYsvySNBwjLY9073z5Y8x8oc/T4SFJ5cnxtgXfqDbjxdwXxN4hieVZbYa3/yyvHPD5Sr6Rd8/3uQq+0UPNy/vP0mXoaXln23T+/W8wDnuhT4n9sNTyXuSq+6JV7cKn3OeoIPG0vJCbnZI3Xs3D8qfEqfc6X22NJ3ebXSj0CRs/0PKK1/XBw0XHQejjUj+I5aXRPJyOVXRix/LjdPC/fKUy0eOKPnAQ+8Pi/UbLa5vfRdpdEDHgj9KbIFXy2slU6VPALCM+Su//m69k5iAP4uORU6wfpf6b77Z33vO4cMJuxHpad9kzYJz7Me4uSNiNWI22JpEnacJLjdWEbn6Xpk7Y7llNbkYlT1RZCq1jb81R3vG5gtcSObuXd4KSZQRgh7hLAwa8jv3skpcnawa8jtbZLQMGur7+TYZiwOvwp86TV1IGvIqTyV4nqThhuQZdmVYI5+ganiiQapNzKwDaWBMJ4UTGsu8LpDLDCRMk7zzx9hhpNFc+4h7xEfed8BGHFfMRh5U4PuKgBp7ioILZcY4daWcyLmCg4OLYqESK+KpgKM0aDSs0PTvtQCo3OyGcpOM7QJHUYnIhHG+a+M4NIFWbqxBO2Ux8NRqQqk0mhFM2Z7Z5/sUF/L34XMBQauQCfsAF/L1wAT/hAv5eWEKAlRxHg4oXdiGgPMc+MJK+8iIDKjGW7+sC2l4cr5KBVGv4pS2kTd9x4BpI1aYSwikdvxSHFGdmEcI5skSD2s4cV4XamYIvVAXyzxNfNQekKzMI4URm5jw70LZ3PMMh5a4Qwkk6yycckLZndimRalfwLXNA5cR7OKS46EYhnLrjBoFUTuwCI6mqq4Vw6o73nEhew58kI2nbcZIHKXcVKwigdrL8JBFQOXccZgfSlRv42iOgpbOs0ICihnMQSIHlBgyVuYFzEEB1U/AaGSjsuQEjlQVHrZHi7DxyAwbKp4obMNCpv3ADBgotb5GRymKK2ILA2WbnkT1goHyq+HEMoLqp2GN/xALiG2lnywICKKlmtiiBgqw5sEDD2V+bHQs0HJ33OQs0HLUwX6R46DMWaDhqNzPfO+b7zajDpeIBA0dFlvkCqZDrF+Ke74VfxcBRYVGwAfGG+X4zzBdLJRXzBYrDS8bPluHEUZGxPsOJo4r53iHyzZkvjm4L5gukT8XCXyHjpKdiYH8SZ7+rBg7w4AQ180Xyl+zAfGGUl185AIyjjtec7QccHeYL2+s4+zarWZ7hBLt8ZL44fp23HI+CiZNhCfkDThgdLTW7Ozj7H+3cXYoEIQwEYJTEnw3ISNQHBWfvf8pl2Z0j1ENDfUcIoTrRxvVynu7gqL82tzeYL7v38O91mJ4v4wEorct4wAni78znH2B6frtw+oVJ6y4uxzBR3I3xADOzs31xgmw/bF+Ybt9buFyghFS88GgSJtpi++IEzV4mb45RupQtfLwaJWhe1tm+KNNKGUxflCi5CNsXZp6dJ092UKKUrEwHlJBO4ccNp8o5lemA0tQsMR1QYjIbTAeUkORIYzqAhDqOcXaAacNMI9PhD8v7LE1VWF6YpjqUowNKrDo4mX2wvM/yW17ljRBKrKqVn7YPSHm5VvxjeZ+l1sryIsX6rPL+AD1ERy6b+ZbzAAAAAElFTkSuQmCC" />
+    <span class="tips">分享至朋友圈，让你的小伙伴们都来<br />回忆当年的传奇岁月</span>
+</div>
+<!--分享指引-->
+<!--alert弹出层-->
+<div class="alertpopbox">
+  <div class="pop" id="alertpop">
+        <p></p>
+        <a href="javascript:;" class="closepop">确定</a><a href="javascript:;" style="display:none;" class="closepop">取消</a>
+    </div>
+</div>
+<!--alert弹出层-->
+<script src="zepto.min.js"></script> 
+<script src="swiper.js"></script> 
+<script src="http://s1.dashenw.cn/cdn/wx/wxshare-1.0.min.js"></script>
+<script>
+"use strict";			
+(function (doc, win) {
+  var docEl = doc.documentElement,
+	resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+	recalc = function () {
+	  var clientWidth = (docEl.clientWidth||win.innerWidth);console.log(clientWidth,win.innerWidth);
+	  if (!clientWidth) return;
+	  docEl.style.fontSize = 100 * (clientWidth / 750) + 'px';
+	};
+
+  if (!doc.addEventListener) return;
+  win.addEventListener(resizeEvt, recalc, false);
+  doc.addEventListener('DOMContentLoaded', recalc, false);
+})(document, window);
+
+wxs.ready({
+	"imgUrl": "http://hygzs.dashenw.cn/name-of-love/h5/images/shareicon.png",
+	"imgWidth": 200,
+	"imgHeight": 200,
+	"link": 'http://hygzs.dashenw.cn/name-of-love/h5/index.html',
+	"title": '“以爱之名”孝亲敬老公益作品创意大赛',
+	"desc": '为推进全国居家和社区养老服务改革试点，倡导文明家风，弘扬传统美德，促进社会参与，营造孝亲敬老良好社会氛围，特举办“以爱之名”孝亲敬老公益作品创作大赛。'
+}, function(){
+	//调用wx分享相关jssdk接口，如语音录制，图片上传，二维码扫描等接口，等同wx.ready()
+	//wx.hideAllNonBaseMenuItem(); //隐藏所有非基础按钮接口
+	//wx.hideMenuItems({menuList:['menuItem:copyUrl', 'menuItem:openWithQQBrowser', 'menuItem:openWithSafari']}); //隐藏复制，浏览器打开菜单
+});
+
+var phoneSystem=(function(o){
+	if(o.indexOf("iPhone")!=-1||o.indexOf("iPad")!=-1||o.indexOf("iPod")!=-1){
+		return 'IOS'+get_ios_version();
+	}
+	else if(o.indexOf("Android")!=-1){
+		return 'Android'+get_android_version();
+	}
+	else{
+		return 'Other';
+	}
+})(navigator.userAgent);
+console.log(phoneSystem);
+
+//播放音乐
+var musicState = 0, sound = document.getElementById("musicAudio"), soundWrap = document.querySelector('.music');
+function initMusic() {
+	0 === musicState && (sound.play(), musicState = 1)
+}
+function toggleMusic() {
+	if (sound.paused) {
+		soundWrap.classList.add("rotateImg");
+		sound.play();
+		return;
+	}
+	soundWrap.classList.remove("rotateImg");
+	setTimeout(function () { sound.pause() }, 0)
+}
+soundWrap.addEventListener('touchstart',toggleMusic,false);
+
+
+
+function initPage(){
+	var imgs = ["arrow.png","art-modal.png","art.png","beKonw01.png","bg.jpg","bg.png","bottombg.png","btn01.png","buliding.png","button.png","button00.png","button01.png","closed.png","flow.png","letter.png","letter03.png","letter04.png","moive.png","movie-modal.png","oldCouple.png","p1title.png","qiqiu.png","qiqiu02.png","qiqiu04.png","request.png","reward.png","slope.png","title03.png","tree.png","tree02.png","tree03.png","upload.png","word-modal.png","word.png"];
+	var imgTotal = 0;
+	var img = new Image();
+	img.onload = function(){imgTotal++;}
+	var barLen = 0;
+	if(sessionStorage.getItem("LoadAllImage")=="yes"){barLen=100;}
+	var timer = setInterval(function() {
+		if (barLen < 100 && barLen < parseInt(imgTotal / imgs.length * 100)){
+			barLen++;
+			$("#load").show().children('span').children('em').html(barLen);
+			}
+		else if(barLen >= 100){
+				clearInterval(timer);
+				sessionStorage.setItem("LoadAllImage", "yes");
+				$("#load").animate({opacity:0}, 200, 'ease-out', function(){
+					$(this).remove();
+					$(".music").show().addClass("rotateImg");sound.play();
+					$('#'+swiperBox+' .swiper-wrapper .swiper-slide').eq(0).addClass("animated");
+					setTimeout(function(){$("#"+swiperBox+" .swiper-wrapper .page0").removeClass("swiper-no-swiping").children(".guide").css("visibility","visible");},1000);
+					})
+			}
+		},10);
+		
+		var timer1 = setInterval(function() {
+			if (imgTotal < imgs.length) {
+				img.src="images/" + imgs[imgTotal];}
+			else {clearInterval(timer1);}
+		},50);
+	
+	/*$("#"+swiperBox).show().siblings('.swiper-container').hide();
+	var mySwiper = new Swiper('#'+swiperBox, {
+		direction: 'vertical',
+		onSlideChangeStart: function() {			
+			var page = mySwiper.activeIndex;
+			handlepage(page);
+		}
+	});
+	
+	function handlepage(page){console.log(page);
+		setTimeout(function(){$('#'+swiperBox+' .swiper-wrapper .swiper-slide').eq(page).addClass("animated").siblings(".animated").removeClass('animated');},300);
+		}*/
+
+	//swiper初始化
+	var swiperBox="swiper";
+	$("#"+swiperBox).show().siblings('.swiper-container').hide();
+	  window.mySwiper = new Swiper('#'+swiperBox, {
+    	//loop:true,
+	    direction: 'vertical',
+	    onSlideChangeStart: function(swiper) {      
+	      var page = swiper.activeIndex;
+	      handlepage(page);
+	    }
+	});
+	//翻滚到下一页的回调函数
+	function handlepage(page){console.log(page);
+	  setTimeout(function(){
+	  	$('#'+swiperBox+' .swiper-wrapper .swiper-slide').eq(page).addClass("animated").siblings(".animated").removeClass('animated');
+	  	if(page==4){mySwiper.slideTo(0, 0, 'true');}
+	  },300);
+	}
+}
+initPage()
+
+var File = function(){
+		var file = {};
+    /*图片预览*/
+    file.previewImage = function(file){
+      var browserVersion = window.navigator.userAgent.toUpperCase();
+      var div = file.parentNode.children[0];
+      if(file.files[0].size>5*1024*1024){
+      	file.value='';
+      	alertpop("上传图片不能大于5M，请先进行压缩再上传");
+      }
+      if (file.files && file.files[0])
+      {
+          var img = new Image();
+          img.onload = function(){
+            div.appendChild(img);
+            div.className="show";
+          }
+          var reader = new FileReader();
+          reader.onload = function(evt){img.src = evt.target.result;}
+          reader.readAsDataURL(file.files[0]);
+          div.onclick=function(e){
+          	var t=e.target,j=0;
+          	if(t.nodeName.toLowerCase()=='p'&&t.className=="show"||t.nodeName.toLowerCase()=='img'&&t.parentNode.className=="show"){
+          		div.removeChild(div.children[0]);
+          		div.className="";
+          		file.value="";
+          	}
+          }
+      }
+    }
+    //
+    return file;
+}();
+
+$('#uploadImage input').on('change', function() {
+	    if(this.value==''){$(this).parent().children('p').click();}
+	    else{File.previewImage(this);}
+	});
+
+/*word上传*/
+$('#wordForm').change(function(){
+	var filelastname=this.value.substring(this.value.lastIndexOf(".")+1);
+	var filename=this.value.substring(12);
+	if(filelastname!=='doc'&&filelastname!=='docx'){this.value='';alert('只能上传word文件！');return false;}
+	var that=$(this),showword=that.parent().children('.showword');
+	showword.children('span').html(filename);
+	showword.show().children('i')[0].onclick=function(){showword.hide();that.val('');showword.children('span').html('');};
+})
+
+	
+//打开分享指引
+function showShareImg(t){
+	var box=document.getElementById("sharetip");
+	if(t){
+		//box.children[2].innerHTML=t;
+		box.style.top=0;
+		box.style.webkitTransform='translateY(0)';
+		box.style.transform='translateY(0)';
+		box.children[0].onclick=function(){
+			box.style.top="150%";
+			box.style.webkitTransform='translateY(350%)';
+			box.style.transform='translateY(350%)';
+			}
+		}
+	else{
+		box.children[2].innerHTML="";
+		box.style.top="150%";
+		box.style.webkitTransform='translateY(350%)';
+		box.style.transform='translateY(350%)';
+		}
+	}
+	
+//打开弹出层	
+function showPOP(t,name){
+	var box=document.getElementById(name).parentNode;
+	if(t){
+		box.style.display="block";
+		setTimeout(function(){box.style.opacity=1;},100);
+		}
+	else{box.style.display="none";box.style.opacity=0;}
+	if(box.getElementsByClassName("closepop").length>0){
+		box.getElementsByClassName("closepop")[0].onclick=function(){
+			box.style.display="none";box.style.opacity=0;
+			}
+		}
+	}
+	
+//打开模拟alert弹出层 
+function alertpop(t){
+	var popobj=document.getElementById("alertpop");
+	popobj.parentNode.style.display="block";
+	popobj.style.display="block";
+	popobj.children[0].innerHTML=t;
+	popobj.style.marginTop=(0-popobj.offsetHeight/2)+"px";
+	popobj.children[1].onclick=popobj.children[2].onclick=function(){
+		popobj.parentNode.style.display="none";
+		popobj.style.display="none";
+		popobj.children[0].innerHTML='';
+		}
+	}
+
+
+//页面加载完成以后
+window.onload=function(){
+  	//参赛细则部分
+	$(".page2 ul li").on("click",function(){
+		var  i =$(this).index();
+		$(this).addClass("active").siblings().removeClass("active");
+		$(".page2 #content>div").eq(i).show().siblings().css("display","none");
+	})
+
+	$("#content")[0].ontouchmove=function(e){
+		e.stopPropagation();
+	}
+
+	//点击显示对应	弹出层	
+	$("#uploadfile span").on("click",function(){
+		var idx = $(this).index();
+		$("#uploadtype").val(idx);
+		$("#ruleContent>div").eq(idx-1).show().siblings('div').hide();
+		showSomePOP(1,'ruleBox');
+	})
+
+}
+
+//打开弹出层 
+function showSomePOP(t,name){
+    var box=document.getElementById(name).parentNode,
+        contbox=box.children[0].children[0];
+    if(t){
+        box.style.display="block";
+        contbox.style.marginTop=(0-contbox.offsetHeight/2)+"px";
+        setTimeout(function(){box.style.opacity=1;},100);
+        }
+    else{box.style.display="none";box.style.opacity=0;}
+    if(box.getElementsByClassName("closepop").length>0){
+        box.getElementsByClassName("closepop")[0].onclick=function(){
+            box.style.display="none";box.style.opacity=0;
+            }
+        }
+    }
+
+
+function submitUploadForm(obj){
+	var uploadtype_val=document.getElementById("uploadtype").value;
+	var haveFormData=!!window.FormData;
+	var posturl;
+	if(haveFormData){
+		var fd = new FormData();
+		fd.append('name', obj.name);
+		fd.append('phone', obj.phone);
+		fd.append('company', obj.company);
+		fd.append('email', obj.email);
+		fd.append('title', obj.title);
+		fd.append('writeidea', obj.writeidea);
+		fd.append('uploadtype', obj.uploadtype);
+		fd.append('phonesysteam', obj.phonesysteam);
+		if(uploadtype_val==1){
+			posturl='uploadWord.php';
+			fd.append('file', document.getElementById('wordForm').files[0]);
+		}
+		else if(uploadtype_val==2){
+			posturl='uploadImage.php';
+			$('#uploadImage input').each(function(){
+				if(this.value!==''){fd.append('upload[]', this.files[0]);}
+				else{$(this).remove();}
+			})
+		}
+	}
+	$.ajax({
+		url: '../inc/'+posturl,
+		type: 'post',
+		data: fd,
+		dataType: 'json',
+		processData: false,
+		contentType: false,
+		success: function(rs) {
+			if(rs.code==0){alertpop(rs.message);resetForm();}
+			else{alert(rs.message);}
+		},
+		error: function(err) {
+			//
+		}
+	});
+}
+
+function IsURL(str){
+    return !!str.match(/(((^https?:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)$/g);
+  }
+
+function resetForm(){
+	$("#name,#phone,#company,#email,#title,#writeidea").val('')
+	$('#uploadImage input').val('');
+	$('#uploadImage p.show').removeClass('show').children('img').remove();
+	$("#videoUrl").val('');
+}
+
+function checkForm(){
+	var phonereg = /^(((13[0-9]{1})|(15[0-9]{1})|(17[0-9]{1})|(18[0-9]{1}))+\d{8})$/;
+    var emailreg = /^([0-9A-Za-z\-_\.]+)@([0-9a-z]+\.[a-z]{2,3}(\.[a-z]{2})?)$/g;
+
+    var name=document.getElementById("name"),name_val=name.value.replace(/\s/g,""),
+    	phone=document.getElementById("phone"),phone_val=phone.value.replace(/\s/g,""),
+    	company=document.getElementById("company"),company_val=company.value.replace(/\s/g,""),
+        email=document.getElementById("email"),email_val=email.value.replace(/\s/g,""),
+        title=document.getElementById("title"),title_val=title.value.replace(/\s/g,""),
+        writeidea=document.getElementById("writeidea"),writeidea_val=writeidea.value.replace(/\s/g,""),
+        uploadtype_val=document.getElementById("uploadtype").value,
+        phonesysteam_val=phoneSystem;
+    var uploadfile=null;
+    if(uploadtype_val==1){uploadfile=document.getElementById('wordForm');}
+    else if(uploadtype_val==2){uploadfile=$('#uploadImage input');}
+    else if(uploadtype_val==3){uploadfile=document.getElementById('videoUrl');}
+
+    if(name_val.length==0){alertpop("请填写姓名");}
+    else if(name_val.length<2||name_val.length>5){alertpop("请填写真实姓名");}
+    else if(phone_val.length==0){alertpop("请填写手机号");}
+    else if(isNaN(phone_val)){alertpop("请正确填写手机号");}
+    else if(phone_val.length!==11){alertpop("请正确填写手机号");}
+    else if(!phonereg.test(phone_val)){alertpop("请正确填写手机号");}
+    else if(company_val.length==0){alertpop("请填写单位/院校");}
+    else if(email_val.length==0){alertpop("请填写电子邮箱");}
+    else if(!emailreg.test(email_val)){alertpop("请正确填写电子邮箱");}
+    else if(title_val.length==0){alertpop("请填写作品名称");}
+    else if(writeidea_val.length==0){alertpop("请填写创作理念");}
+    else if(uploadtype_val==1&&uploadfile.value==''){alertpop("请上传报名参赛的作品");}
+    else if(uploadtype_val==3&&uploadfile.value==''){alertpop("请输入视频地址");}
+    else if(uploadtype_val==3&&!IsURL(uploadfile.value)){alertpop("请正确填写视频地址");}
+    else if(uploadtype_val==2&&uploadfile[0].value==''&&uploadfile[1].value==''&&uploadfile[2].value==''&&uploadfile[3].value==''&&uploadfile[4].value==''){alertpop("请上传报名参赛的作品");}
+    else{
+    	var upimg=$('#uploadImage input');
+    	var wordval=$('#wordForm').val();
+    	if( wordval!=='' ){uploadtype.value=1;}
+    	else if( wordval==''&&(upimg[0].value!==''||upimg[1].value!==''||upimg[2].value!==''||upimg[3].value!==''||upimg[4].value!=='') ){uploadtype.value=2;}
+    	else if( wordval==''&&upimg[0].value==''&&upimg[1].value==''&&upimg[2].value==''&&upimg[3].value==''&&upimg[4].value==''&&$('#videoUrl').val()!=='' ){uploadtype.value=3;}
+    	else{uploadtype.value=1;}
+    	var obj={
+    		'name':encodeURIComponent(name_val),
+			'phone':encodeURIComponent(phone_val),
+			'company':encodeURIComponent(company_val),
+			'email':encodeURIComponent(email_val),
+			'title':encodeURIComponent(title_val),
+			'writeidea':encodeURIComponent(writeidea_val),
+			'uploadtype':encodeURIComponent(uploadtype_val),
+			'phonesysteam':encodeURIComponent(phonesysteam_val)
+    	};
+    	if(uploadtype.value==1){
+    		alertpop('因word文件在手机端的难以处理和编辑，所以决定暂不开放手机端的word文件上传，如需要上传文学类作品请在电脑浏览器中参与本次活动。');
+    		return false;
+    	}
+        if(uploadtype.value==3){
+        	obj.videoUrl=encodeURIComponent(uploadfile.value);
+        	$.post('../inc/uploadVideo.php',obj,function(rs){
+        		if(rs.code==0){alertpop(rs.message);resetForm();}
+				else{alert(rs.message);}
+        	},'json');
+        }
+       	else{submitUploadForm(obj);}
+    }
+    return false;
+}
+//统计
+var _hmt=_hmt||[];(function(){var hm=document.createElement("script");hm.src="https://hm.baidu.com/hm.js?b353f20c2ccabd30a6245bf4a1d48e89";var s=document.getElementsByTagName("script")[0];s.parentNode.insertBefore(hm,s)})();
+</script>
+</body>
+</html>
